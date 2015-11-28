@@ -1,6 +1,7 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
@@ -79,11 +79,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     return;
                 }
                 //Once we have an ISBN, start a book intent
-                Intent bookIntent = new Intent(getActivity(), BookService.class);
-                bookIntent.putExtra(BookService.EAN, ean);
-                bookIntent.setAction(BookService.FETCH_BOOK);
-                getActivity().startService(bookIntent);
-                AddBook.this.restartLoader();
+                startBookIntent(ean);
             }
         });
 
@@ -93,16 +89,13 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 // This is the callback method that the system will invoke when your button is
                 // clicked. You might do this by launching another app or by including the
                 //functionality directly in this app.
-                // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
-                // are using an external app.
-                //when you're done, remove the toast below.
-                Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
+                try {
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+                    startActivityForResult(intent, 0);
+                } catch (ActivityNotFoundException e) {
+                    showToast("Please install a barcode scanning app.");
+                }
             }
         });
 
@@ -130,6 +123,35 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            final String SCAN_RESULT = "SCAN_RESULT";
+            final String SCAN_RESULT_FORMAT = "SCAN_RESULT_FORMAT";
+            if (resultCode == Activity.RESULT_OK && data.hasExtra(SCAN_RESULT)
+                    && data.hasExtra(SCAN_RESULT_FORMAT)) {
+                String contents = data.getStringExtra(SCAN_RESULT);
+                String format = data.getStringExtra(SCAN_RESULT_FORMAT);
+                if ("EAN_13".equals(format)) {
+                    ean.setText(contents);
+                    startBookIntent(contents);
+                    return;
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                return;
+            }
+            showToast("There were issues with scanning this book’s barcode.");
+        }
+    }
+
+    private void startBookIntent(String ean) {
+        Intent bookIntent = new Intent(getActivity(), BookService.class);
+        bookIntent.putExtra(BookService.EAN, ean);
+        bookIntent.setAction(BookService.FETCH_BOOK);
+        getActivity().startService(bookIntent);
+        AddBook.this.restartLoader();
     }
 
     private void restartLoader(){
@@ -203,5 +225,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activity.setTitle(R.string.scan);
+    }
+
+    private void showToast(CharSequence text) {
+        Context context = getActivity();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }
