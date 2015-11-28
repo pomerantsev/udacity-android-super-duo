@@ -71,8 +71,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             public void afterTextChanged(Editable s) {
                 String ean =s.toString();
                 //catch isbn10 numbers
-                if(ean.length()==10 && !ean.startsWith("978")){
-                    ean="978"+ean;
+                String isbnPrefix = getString(R.string.isbn_prefix);
+                if(ean.length()==10 && !ean.startsWith(isbnPrefix)){
+                    ean=isbnPrefix+ean;
                 }
                 if(ean.length()<13){
                     clearFields();
@@ -94,7 +95,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
                     startActivityForResult(intent, 0);
                 } catch (ActivityNotFoundException e) {
-                    showToast("Please install a barcode scanning app.");
+                    showToast(getString(R.string.no_barcode_scanning_app));
                 }
             }
         });
@@ -146,7 +147,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 return;
             }
-            showToast("There were issues with scanning this book’s barcode.");
+            showToast(getString(R.string.barcode_scanning_issues));
         }
     }
 
@@ -172,8 +173,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             return null;
         }
         String eanStr= ean.getText().toString();
-        if(eanStr.length()==10 && !eanStr.startsWith("978")){
-            eanStr="978"+eanStr;
+        String isbnPrefix = getString(R.string.isbn_prefix);
+        if(eanStr.length()==10 && !eanStr.startsWith(isbnPrefix)){
+            eanStr=isbnPrefix+eanStr;
         }
         return new CursorLoader(
                 getActivity(),
