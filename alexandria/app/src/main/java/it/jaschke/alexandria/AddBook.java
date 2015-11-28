@@ -122,6 +122,10 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             ean.setHint("");
         }
 
+        if (!Utility.isNetworkAvailable(getActivity())) {
+            showToast(getString(R.string.network_unavailable));
+        }
+
         return rootView;
     }
 
@@ -147,11 +151,15 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     private void startBookIntent(String ean) {
-        Intent bookIntent = new Intent(getActivity(), BookService.class);
-        bookIntent.putExtra(BookService.EAN, ean);
-        bookIntent.setAction(BookService.FETCH_BOOK);
-        getActivity().startService(bookIntent);
-        AddBook.this.restartLoader();
+        if (Utility.isNetworkAvailable(getActivity())) {
+            Intent bookIntent = new Intent(getActivity(), BookService.class);
+            bookIntent.putExtra(BookService.EAN, ean);
+            bookIntent.setAction(BookService.FETCH_BOOK);
+            getActivity().startService(bookIntent);
+            restartLoader();
+        } else {
+            showToast(getString(R.string.network_unavailable));
+        }
     }
 
     private void restartLoader(){
