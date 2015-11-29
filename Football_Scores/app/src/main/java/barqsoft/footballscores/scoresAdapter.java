@@ -45,10 +45,20 @@ public class scoresAdapter extends CursorAdapter
     public void bindView(View view, final Context context, Cursor cursor)
     {
         final ViewHolder mHolder = (ViewHolder) view.getTag();
-        mHolder.home_name.setText(cursor.getString(COL_HOME));
-        mHolder.away_name.setText(cursor.getString(COL_AWAY));
-        mHolder.date.setText(cursor.getString(COL_MATCHTIME));
-        mHolder.score.setText(Utilies.getScores(cursor.getInt(COL_HOME_GOALS),cursor.getInt(COL_AWAY_GOALS)));
+        String homeName = cursor.getString(COL_HOME);
+        String awayName = cursor.getString(COL_AWAY);
+        String matchTime = cursor.getString(COL_MATCHTIME);
+        mHolder.home_name.setText(homeName);
+        mHolder.home_name.setContentDescription(context.getString(R.string.teams_description,
+                homeName, awayName));
+        mHolder.away_name.setText(awayName);
+        mHolder.away_name.setContentDescription("\u00A0");
+        mHolder.date.setText(matchTime);
+        mHolder.date.setContentDescription(context.getString(R.string.time_description, matchTime));
+        int homeGoals = cursor.getInt(COL_HOME_GOALS);
+        int awayGoals = cursor.getInt(COL_AWAY_GOALS);
+        mHolder.score.setText(Utilies.getScores(homeGoals, awayGoals));
+        mHolder.score.setContentDescription(Utilies.getScoreDescription(context, homeGoals, awayGoals));
         mHolder.match_id = cursor.getDouble(COL_ID);
         mHolder.home_crest.setImageResource(Utilies.getTeamCrestByTeamName(
                 cursor.getString(COL_HOME)));
@@ -75,11 +85,10 @@ public class scoresAdapter extends CursorAdapter
             Button share_button = (Button) v.findViewById(R.id.share_button);
             share_button.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     //add Share Action
-                    context.startActivity(createShareForecastIntent(mHolder.home_name.getText()+" "
-                    +mHolder.score.getText()+" "+mHolder.away_name.getText() + " "));
+                    context.startActivity(createShareForecastIntent(mHolder.home_name.getText() + " "
+                            + mHolder.score.getText() + " " + mHolder.away_name.getText() + " "));
                 }
             });
         }

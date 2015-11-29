@@ -1,5 +1,7 @@
 package barqsoft.footballscores;
 
+import android.content.Context;
+
 /**
  * Created by yehya khaled on 3/3/2015.
  */
@@ -36,6 +38,15 @@ public class Utilies
         else
         {
             return String.valueOf(home_goals) + " - " + String.valueOf(awaygoals);
+        }
+    }
+
+    public static String getScoreDescription(Context context, int home_goals, int away_goals) {
+        if (home_goals < 0 || away_goals < 0) {
+            return context.getString(R.string.not_played_description);
+        } else {
+            return context.getString(R.string.scores_description, String.valueOf(home_goals),
+                    String.valueOf(away_goals));
         }
     }
 
