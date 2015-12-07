@@ -12,32 +12,27 @@ public class Utilies
     public static final int PRIMERA_DIVISION = 399;
     public static final int BUNDESLIGA1 = 394;
     public static final int BUNDESLIGA2 = 395;
-    public static String getLeague(int league_num)
+    public static String getLeague(Context context, int league_num)
     {
         switch (league_num)
         {
-            case SERIE_A : return "Seria A";
-            case PREMIER_LEAGUE : return "Premier League";
-            case PRIMERA_DIVISION : return "Primera Division";
+            case SERIE_A : return context.getString(R.string.league_serie_a);
+            case PREMIER_LEAGUE : return context.getString(R.string.league_premier_league);
+            case PRIMERA_DIVISION : return context.getString(R.string.league_primera_division);
             case BUNDESLIGA1 :
-            case BUNDESLIGA2 : return "Bundesliga";
-            default: return "Not known League Please report";
+            case BUNDESLIGA2 : return context.getString(R.string.league_bundesliga);
+            default: return context.getString(R.string.league_unknown);
         }
     }
-    public static String getMatchDay(int match_day,int league_num)
-    {
-        return "Matchday : " + String.valueOf(match_day);
-    }
-
-    public static String getScores(int home_goals,int awaygoals)
+    public static String getScores(Context context, int home_goals,int awaygoals)
     {
         if(home_goals < 0 || awaygoals < 0)
         {
-            return " - ";
+            return context.getString(R.string.scores_empty);
         }
         else
         {
-            return String.valueOf(home_goals) + " - " + String.valueOf(awaygoals);
+            return context.getString(R.string.scores, String.valueOf(home_goals), String.valueOf(awaygoals));
         }
     }
 
@@ -50,7 +45,7 @@ public class Utilies
         }
     }
 
-    public static int getTeamCrestByTeamName (String teamname)
+    public static int getTeamCrestByTeamName (Context context, String teamname)
     {
         if (teamname==null){return R.drawable.no_icon;}
         switch (teamname)

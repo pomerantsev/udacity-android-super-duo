@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
     <string name="app_name">Football Scores</string>
     <string name="hello_world">Hello world!</string>
@@ -8,12 +8,6 @@
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="champions_league">UEFA Champions League</string>
-    <string name="bundesliga">Bundesliga</string>
-    <string name="premierleague">Premier League</string>
-    <string name="primeradivison">Primera Division</string>
-    <string name="seriaa">Serie A</string>
-    <string name="matchday_text">Match day</string>
     <string name="group_stage_text">Group stages</string>
     <string name="first_knockout_round">First knockout round</string>
     <string name="quarter_final">Quarter Final</string>
@@ -41,4 +35,25 @@
     <string name="time_description">Starting at <xliff g="time">%1$s</xliff></string>
 
     <string name="title_widget_last_game">Last Game</string>
+
+    <string name="time_prefix" translatable="false">T</string>
+    <string name="time_suffix" translatable="false">Z</string>
+
+    <string name="date_format_with_seconds" translatable="false">yyyy-MM-ddHH:mm:ss</string>
+    <string name="date_format_without_seconds" translatable="false">yyyy-MM-dd:HH:mm</string>
+    <string name="date_format_no_time" translatable="false">yyyy-MM-dd</string>
+    <string name="date_format_weekday" translatable="false">EEEE</string>
+
+    <string name="share_message"><xliff:g id="home_name">%1$s</xliff:g> <xliff:g id="score">%2$s</xliff:g> <xliff:g id="away_name">%3$s</xliff:g> #Football_Scores</string>
+
+    <string name="league_serie_a">Seria A</string>
+    <string name="league_premier_league">Premier League</string>
+    <string name="league_primera_division">Primera Division</string>
+    <string name="league_bundesliga">Bundesliga</string>
+    <string name="league_unknown">Not known League Please report</string>
+
+    <string name="matchday">Matchday: <xliff:g id="matchday">%1$s</xliff:g></string>
+
+    <string name="scores_empty"> - </string>
+    <string name="scores"><xliff:g id="home_goals">%1$s</xliff:g> - <xliff:g id="away_goals">%2$s</xliff:g></string>
 </resources>

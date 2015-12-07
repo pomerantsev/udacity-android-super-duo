@@ -53,13 +53,13 @@ public class LastGameWidgetIntentService extends IntentService {
         }
 
         String homeName = data.getString(INDEX_HOME_TEAM);
-        int homeCrestResourceId = Utilies.getTeamCrestByTeamName(homeName);
+        int homeCrestResourceId = Utilies.getTeamCrestByTeamName(this, homeName);
         int homeGoals = data.getInt(INDEX_HOME_GOALS);
         int awayGoals = data.getInt(INDEX_AWAY_GOALS);
-        String scoreString = Utilies.getScores(homeGoals, awayGoals);
+        String scoreString = Utilies.getScores(this, homeGoals, awayGoals);
         String timeString = data.getString(INDEX_TIME);
         String awayName = data.getString(INDEX_AWAY_TEAM);
-        int awayCrestResourceId = Utilies.getTeamCrestByTeamName(awayName);
+        int awayCrestResourceId = Utilies.getTeamCrestByTeamName(this, awayName);
         data.close();
 
         for (int appWidgetId : appWidgetIds) {
