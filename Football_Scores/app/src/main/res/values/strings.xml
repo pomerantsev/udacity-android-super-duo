@@ -39,4 +39,6 @@
     <string name="not_played_description">Score: not played yet</string>
     <string name="scores_description">Score: <xliff g="home">%1$s</xliff> <xliff g="away">%2$s</xliff></string>
     <string name="time_description">Starting at <xliff g="time">%1$s</xliff></string>
+
+    <string name="title_widget_last_game">Last Game</string>
 </resources>
