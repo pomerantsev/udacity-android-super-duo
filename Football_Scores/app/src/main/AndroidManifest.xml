@@ -45,6 +45,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_last_game_info" />
         </receiver>
+        <service android:name=".widget.LastGameWidgetIntentService" />
     </application>
 
 </manifest>
